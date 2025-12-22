@@ -4,7 +4,8 @@
   <meta charset="utf-8" />
   <title>Divine AI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="/favicon.png" type="image/png">
+  <!-- favicon: use the provided image in the same folder -->
+  <link rel="icon" href="divine-fav.png" type="image/png">
   <link rel="stylesheet" href="styles.css">
   <!-- Marked for Markdown rendering -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -27,7 +28,9 @@
   <div class="sidebar" id="chats-sidebar">
     <div class="sidebar-header">
       <div class="sidebar-title">
-        <span>💠</span> Divine AI
+        <!-- replaced emoji with provided image -->
+        <img src="divine-fav.png" alt="Divine" class="sidebar-fav">
+        Divine AI
       </div>
       <button class="sidebar-close" id="close-chats-sidebar">&times;</button>
     </div>
@@ -58,15 +61,15 @@
       <div style="margin-top: 28px; text-align: left;">
         <label for="model-select" style="font-weight:500;">Switch Model</label>
         <select id="model-select" style="margin-left:12px; font-size:1.08em; padding:3px 10px; border-radius:6px;">
-          <option value="flex">Divine Flex</option>
-          <option value="comfort">Divine Comfort</option>
-          <option value="agent">Divine Agent</option>
+          <option value="flex">Flex 1.0</option>
+          <option value="comfort">Comfort 1.0</option>
+          <option value="agent">Agent 1.0</option>
         </select>
         <div style="font-size:.94em; margin-top:7px; color:#888; max-width:320px;">
           Model used for new chats.<br>
-          <b>Divine Flex:</b> Power & efficiency — best for writing & complicated tasks.<br>
-          <b>Divine Comfort:</b> Friendly, conversational, comforting.<br>
-          <b>Divine Agent:</b> Coding-focused assistant (primary focus: coding).
+          <b>Flex 1.0:</b> Power & efficiency — best for writing & complicated tasks.<br>
+          <b>Comfort 1.0:</b> Friendly, conversational, comforting.<br>
+          <b>Agent 1.0:</b> Coding-focused assistant (primary focus: coding).
         </div>
       </div>
     </div>
