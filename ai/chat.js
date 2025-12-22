@@ -8,10 +8,9 @@
 const API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
 // ---------------------------
-// Put your Groq API key here
+// Put your Groq API key here (split into parts if you already have that pattern)
 // ---------------------------
-// Replace the empty string with your key, e.g. "sk_XXXX...."
-// Keep this file private if you want to reduce exposure.
+// Existing split key retained (you placed it here already).
 const part1 = "gsk_tklwAb0p0ulXOlfH3";
 const part2 = "mmZWGdyb3FYE2aCHD";
 const part3 = "SFeFdTudQ9VdzapQOz";
@@ -19,24 +18,25 @@ const API_KEY = part1 + part2 + part3;
 // ---------------------------
 // Models configuration
 // Edit systemPrompt strings for each model with the persona/instructions you want.
+// Names updated to 1.0 labels per request.
 // ---------------------------
 const LOCAL_MODEL_KEY = "divineai_model";
 const MODELS = {
   flex: {
     id: "openai/gpt-oss-20b",
-    name: "Divine Flex",
+    name: "Flex 1.0",
     limit: 25,
     systemPrompt: "" // Fill in Divine Flex system prompt (power/efficiency)
   },
   comfort: {
     id: "openai/gpt-oss-20b",
-    name: "Divine Comfort",
+    name: "Comfort 1.0",
     limit: 25,
     systemPrompt: "" // Fill in Divine Comfort system prompt (friendly)
   },
   agent: {
     id: "openai/gpt-oss-20b",
-    name: "Divine Agent",
+    name: "Agent 1.0",
     limit: 25,
     systemPrompt: "" // Fill in Divine Agent system prompt (coding-focused)
   }
@@ -138,7 +138,10 @@ function setDarkMode(on) {
 if (dmToggle) {
   dmToggle.onchange = e => setDarkMode(e.target.checked);
 }
-if (localStorage.getItem(DARK_KEY) === "1") setDarkMode(true);
+// DEFAULT: dark mode ON by default (unless user previously switched)
+const storedDark = localStorage.getItem(DARK_KEY);
+if (storedDark === "1") setDarkMode(true);
+else if (storedDark === null) setDarkMode(true); // default to dark if not set
 else setDarkMode(false);
 
 // ---------------------------
@@ -175,7 +178,7 @@ function renderChatList() {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = "chat-delete-btn";
     deleteBtn.title = "Delete chat";
-    deleteBtn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" style="vertical-align:middle;"><path d="M6 7v13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7"/><path d="M19 6H5"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
+    deleteBtn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" style="vertical-align:middle;"><path d="M6 7v13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7"/><path d="M19 6H5"/><path d="M8 6V4a2 2 0 0 [..truncated in editor..]"/></svg>';
     deleteBtn.onclick = (e) => {
       e.stopPropagation();
       if (confirm("Delete this chat?")) {
@@ -442,17 +445,17 @@ async function sendMessage() {
   
   try {
     const sanitizedMessages = sanitizeMessagesForAPI(chat.messages);
-const response = await fetch(API_URL, {
-  method: "POST",
-  headers: {
-    "Authorization": `Bearer ${API_KEY}`,
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    model: modelId,
-    messages: sanitizedMessages
-  })
-});
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: modelId,
+        messages: sanitizedMessages
+      })
+    });
 
     // handle non-2xx
     const text = await response.text();
@@ -534,7 +537,7 @@ if (exportBtn) {
   exportBtn.onclick = function() {
     let chat = currentChat();
     if (!chat) return alert("No chat selected!");
-    let modelName = MODELS[chat.modelKey]?.name || "Divine Flex";
+    let modelName = MODELS[chat.modelKey]?.name || "Flex 1.0";
     let md = `# Divine AI Chat Export\n\n**Model:** ${modelName}\n\n`;
     for (const m of chat.messages) {
       if (m.role === "system") continue;
