@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Divine — Hub</title>
+  <link rel="icon" href="assets/divine-fav.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Announcement banner: full-width, sticky -->
+  <div class="announcement" role="banner" aria-live="polite">
+    We've just opened! Have a divine experience!
+  </div>
+
+  <!-- Main container -->
+  <main class="container" id="main" role="main">
+    <!-- Top-left emoji toggle (regular flow so it won't overlap banner) -->
+    <button id="theme-toggle" class="theme-toggle" aria-pressed="true" aria-label="Toggle theme">☀️</button>
+
+    <!-- Centered title area -->
+    <header class="title-area" role="heading" aria-level="1">
+      <h1 class="site-title">Welcome to <span class="brand">Divine</span></h1>
+      <p class="tagline">Divine fun in every corner</p>
+    </header>
+
+    <!-- Grid of buttons -->
+    <nav class="grid" aria-label="Main navigation">
+      <a class="tile" href="/games">Games</a>
+      <a class="tile" href="/browse">Browse</a>
+      <a class="tile" href="/sites">Other Sites</a>
+      <a class="tile" href="/chat">Chat</a>
+      <a class="tile" href="/sound">Soundboard</a>
+      <a class="tile" href="/ai">AI</a>
+      <a class="tile" href="/remove">Remove Access</a>
+      <a class="tile" href="/settings">Settings</a>
+      <a class="tile" href="/log">Update Log</a>
+    </nav>
+
+    <div class="meta">
+      <div class="version">Site Version: 1.0.0</div>
+    </div>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <p class="disclaimer">Disclaimer: This website and its contents are provided for entertainment purposes only. We are not responsible for any misuse of the services offered, including violations of rules, policies, or laws in your location or institution. Accessing this site using unauthorized devices or networks is prohibited. By using this site, you accept full responsibility for compliance</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
