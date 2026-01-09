@@ -20,7 +20,6 @@
       margin: 0 0 18px;
       text-align: center;
       color: var(--gold);
-      /* subtle shine effect if you want: */
       text-shadow: 0 1px 8px rgba(255,255,255,0.08), 0 6px 24px #43206b60;
     }
     .games-grid {
@@ -102,19 +101,20 @@
     </header>
     <section class="games-grid">
       <!-- Nut Simulator -->
-      <div class="game-card" tabindex="0" aria-label="Nut Simulator">
+      <div class="game-card" tabindex="0" aria-label="Nut Simulator" onclick="window.location.href='/game/test2'" onkeydown="if(event.key==='Enter'||event.key===' '){window.location.href='/game/nut-sim'}">
         <img class="game-img" src="/divine/assets/nut-simulator-img.png" alt="Nut Simulator Image" loading="lazy" />
         <div class="game-title">Nut Simulator</div>
       </div>
       <!-- Beyond Rare X -->
-      <div class="game-card" tabindex="0" aria-label="Beyond Rare X">
+      <div class="game-card" tabindex="0" aria-label="Beyond Rare X" onclick="window.location.href='/game/test1'" onkeydown="if(event.key==='Enter'||event.key===' '){window.location.href='/game/beyond-rare-x'}">
         <img class="game-img" src="/divine/assets/beyond-rare-x.png" alt="Beyond Rare X Image" loading="lazy" />
         <div class="game-title">Beyond Rare X</div>
       </div>
-      <!-- Add more cards below as you add games! -->
+      <!-- Add more cards below as you add games! 
+        You can copy the div below and set the href in onclick and onkeydown:
+        <div class="game-card" tabindex="0" aria-label="GAME_NAME" onclick="window.location.href='/game/YOUR_PATH'" onkeydown="if(event.key==='Enter'||event.key===' '){window.location.href='/game/YOUR_PATH'}">
+      -->
     </section>
   </div>
-
-  <script src="/divine/script.js"></script>
 </body>
 </html>
