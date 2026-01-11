@@ -6,7 +6,7 @@
 // - Enforces lockdown by redirecting any /divine/* page to /lockdown
 
 (function () {
-  const PANEL_HOST = "https://dv-panel.giize.com";
+  const PANEL_HOST = "https://dv-panel-app.sirco.online";
   const STATE_URL = PANEL_HOST + "/api/state";
   const WS_URL = PANEL_HOST.replace(/^http/, "ws") + "/ws";
 
