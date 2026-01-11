@@ -22,6 +22,32 @@
   })();
   </script>
 
+  <!-- Early lockdown check: if lockdown is enabled (from admin panel), redirect to /lockdown immediately.
+       This runs before styles/scripts are fetched so the protected page won't flash during lockdown. -->
+  <script>
+  (function(){
+    var PANEL_HOST = "https://dv-panel.giize.com";
+    var STATE_URL = PANEL_HOST + "/api/state";
+
+    function goLockdown(){
+      if (location.pathname === "/lockdown" || location.pathname.indexOf("/lockdown/") === 0) return;
+      location.replace("/lockdown" + location.search + location.hash);
+    }
+
+    try {
+      fetch(STATE_URL, { cache: "no-store" })
+        .then(function(res){ return res.json(); })
+        .then(function(json){
+          if (!json || !json.ok) return;
+          if (json.lockdown && json.lockdown.enabled) goLockdown();
+        })
+        .catch(function(){});
+    } catch (e) {
+      // ignore
+    }
+  })();
+  </script>
+
   <link rel="icon" href="/divine/assets/divine-fav.png" />
   <!-- Use absolute paths so assets load whether the URL has a trailing slash or not -->
   <link rel="stylesheet" href="/divine/styles.css" />
@@ -62,9 +88,12 @@
   </main>
 
   <footer class="site-footer" role="contentinfo">
-    <p class="disclaimer">Disclaimer: This website and its contents are provided for entertainment purposes only. We are not responsible for any misuse of the services offered, including violations of[...]
+    <p class="disclaimer">Disclaimer: This website and its contents are provided for entertainment purposes only. We are not responsible for any misuse of the services offered, including violations of any rules, laws, or regulations. Use at your own risk.</p>
   </footer>
 
   <script src="/divine/script.js"></script>
+
+  <!-- Admin panel client: realtime broadcasts + lockdown enforcement for /divine/* pages -->
+  <script src="/divine/panel-client.js"></script>
 </body>
 </html>
