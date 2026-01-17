@@ -45,6 +45,7 @@
   - Static site DOES NOT store, fetch, or validate the real PIN.
   - User enters a PIN attempt; we POST it to the panel (/api/auth).
   - Panel validates against its server-side env and returns { allowed: true/false }.
+  - On success, panel will mark this clientID as VERIFIED.
   - We keep the existing UX:
       • "Wrong Password" messaging
       • lockout after 3 failed attempts (client-side throttle)
@@ -64,6 +65,7 @@
   const PANEL_HOST = "https://dv-panel-app.sirco.online";
   const STATE_URL = PANEL_HOST + "/api/state";
   const AUTH_URL = PANEL_HOST + "/api/auth";
+  const HELLO_URL = PANEL_HOST + "/api/hello";
 
   const LOCKDOWN_KEY = "divine.panel.lockdown"; // cache "1" | "0"
   const CLIENT_ID_KEY = "divine.clientID";
@@ -82,6 +84,33 @@
 
     try { localStorage.setItem(CLIENT_ID_KEY, id); } catch (e) {}
     return id;
+  }
+
+  function deviceInfo() {
+    const ua = (navigator && navigator.userAgent) ? String(navigator.userAgent) : "";
+    const platform = (navigator && navigator.platform) ? String(navigator.platform) : "";
+    const language = (navigator && navigator.language) ? String(navigator.language) : "";
+    let timezone = "";
+    try { timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+
+    let screenStr = "";
+    try {
+      if (screen && typeof screen.width === "number" && typeof screen.height === "number") {
+        screenStr = screen.width + "x" + screen.height;
+      }
+    } catch (e) {}
+
+    return { ua, platform, language, timezone, screen: screenStr };
+  }
+
+  async function hello(clientID) {
+    try {
+      await fetch(HELLO_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ clientID, device: deviceInfo() })
+      });
+    } catch (e) {}
   }
 
   function setLockdownFlag(enabled) {
@@ -202,6 +231,7 @@
 
   async function validatePinServerSide(pinAttempt) {
     const clientID = ensureClientID();
+    hello(clientID);
 
     const res = await fetch(AUTH_URL, {
       method: "POST",
@@ -237,7 +267,6 @@
         return;
       }
 
-      // Wrong PIN attempt path
       const prev = getFailedAttempts();
       const nowAttempts = prev + 1;
       setFailedAttempts(nowAttempts);
@@ -259,7 +288,6 @@
     }
   }
 
-  // Keep lockdown flag reasonably fresh
   refreshLockdownFlag();
   window.addEventListener("focus", refreshLockdownFlag);
 
@@ -268,7 +296,6 @@
 
   updateLock();
 
-  // If access cookie already exists, show modal prompt to continue.
   (function(){
     let hasAccess = false;
     try {
